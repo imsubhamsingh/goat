@@ -14,6 +14,7 @@ class API:
         """
         Add a new route
         """
+        assert path not in self.routes, "Such route already exists."
 
         def wrapper(handler):
             self.routes[path] = handler

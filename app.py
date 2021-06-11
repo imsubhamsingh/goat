@@ -20,7 +20,7 @@ def about(request, response):
 
 
 # custom parameterized route
-@app.route("/{name}")
+@app.route("/who/{name}")
 def greet(request, response, name):
     response.text = f"Bonjour, {name}"
 
@@ -28,3 +28,8 @@ def greet(request, response, name):
 @app.route("/age/{age:d}")
 def say_your_age(request, response, age):
     response.text = f"Your age is {age}"
+
+
+@app.route("/home")
+def home(request, response):
+    response.text = "Hello from the HOME page"
