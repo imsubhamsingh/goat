@@ -20,6 +20,11 @@ def about(request, response):
 
 
 # custom parameterized route
-@app.route("/{name}")
+@app.route("/{name}/")
 def greet(request, response, name):
     response.text = f"Bonjour, {name}"
+
+
+@app.route("/age/{age:d}")
+def say_your_age(request, response, age):
+    response.text = f"Your age is {age}"
