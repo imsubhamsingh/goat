@@ -30,6 +30,10 @@ class API:
 
         return response(environ, start_response)
 
+    def default_response(self, response):
+        response.status_code = 404
+        response.text = "Sorry, page not Found."
+
     def handle_request(self, request):
         """
         Method for response creation
@@ -42,6 +46,6 @@ class API:
                 handler(request, response)
                 return response
 
-        response.text = f"Hello Goat , with this user agent: {user_agent}"
-
+        # response.text = f"Hello Goat , with this user agent: {user_agent}"
+        self.default_response(response)
         return response
