@@ -1,4 +1,5 @@
 from webob import Request, Response
+from parse import parse
 
 
 class API:
@@ -16,7 +17,6 @@ class API:
 
         def wrapper(handler):
             self.routes[path] = handler
-            print(self.routes)
             return handler
 
         return wrapper
@@ -47,8 +47,10 @@ class API:
         to the path but also the keyword params
         """
         for path, handler in self.routes.items():
-            if path == request_path:
-                return handler
+            result = parse(path, request_path)
+            if result is not None:
+                return handler, result.named
+        return None, None
 
     def handle_request(self, request):
         """
@@ -57,10 +59,10 @@ class API:
 
         response = Response()
 
-        handler = self.find_handler(request_path=request.path)
+        handler, kwargs = self.find_handler(request_path=request.path)
 
         if handler is not None:
-            handler(request, response)
+            handler(request, response, **kwargs)
         else:
             self.default_response(response)
 

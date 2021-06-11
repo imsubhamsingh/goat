@@ -17,3 +17,9 @@ def index(request, response):
 @app.route("/about")
 def about(request, response):
     response.text = "Namaste from about page :)"
+
+
+# custom parameterized route
+@app.route("/{name}")
+def greet(request, response, name):
+    response.text = f"Bonjour, {name}"
