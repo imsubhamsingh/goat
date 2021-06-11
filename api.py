@@ -10,6 +10,10 @@ class API:
         self.routes = {}
 
     def route(self, path):
+        """
+        Add a new route
+        """
+
         def wrapper(handler):
             self.routes[path] = handler
             print(self.routes)
@@ -31,21 +35,33 @@ class API:
         return response(environ, start_response)
 
     def default_response(self, response):
+        """
+        Returns the default response for page not found
+        """
         response.status_code = 404
         response.text = "Sorry, page not Found."
+
+    def find_handler(self, request_path):
+        """
+        Method to find not only the method that corresponds
+        to the path but also the keyword params
+        """
+        for path, handler in self.routes.items():
+            if path == request_path:
+                return handler
 
     def handle_request(self, request):
         """
         Method for response creation
         """
-        user_agent = request.environ.get("HTTP_USER_AGENT", "NO Agent Found")
+
         response = Response()
 
-        for path, handler in self.routes.items():
-            if path == request.path:
-                handler(request, response)
-                return response
+        handler = self.find_handler(request_path=request.path)
 
-        # response.text = f"Hello Goat , with this user agent: {user_agent}"
-        self.default_response(response)
+        if handler is not None:
+            handler(request, response)
+        else:
+            self.default_response(response)
+
         return response
