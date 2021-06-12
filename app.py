@@ -33,3 +33,14 @@ def say_your_age(request, response, age):
 @app.route("/home")
 def home(request, response):
     response.text = "Hello from the HOME page"
+
+
+# class Based handler
+@app.route("/pizza")
+class PizzaHandler:
+    def get(self, request, response):
+        print(response)
+        response.text = "Order Pizza"
+
+    # def post(self, request, response):
+    #     response.text = "Endpoint to queue a pizza"
