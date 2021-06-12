@@ -15,15 +15,23 @@ class API:
 
     def route(self, path):
         """
-        Add a new route
+        Decorator that adds a new route, also
+        restricts same routes.
         """
-        assert path not in self.routes, "Such route already exists."
 
         def wrapper(handler):
-            self.routes[path] = handler
+            self.add_route(path, handler)
             return handler
 
         return wrapper
+
+    def add_route(self, path, handler):
+        """
+        An alternate django way to add routes
+        """
+        assert path not in self.routes, "Such route already exists."
+
+        self.routes[path] = handler
 
     def __call__(self, environ, start_response):
         """

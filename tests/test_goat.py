@@ -58,3 +58,14 @@ def test_status_code_returned(api, client):
         resp.status_code = 215
 
     assert client.get(url("/xxx")).status_code == 215
+
+
+def test_alternate_route(api, client):
+    response_text = "Alternate or django way to add a route."
+
+    def home(req, resp):
+        resp.text = response_text
+
+    api.add_route("/alternative", home)
+
+    assert client.get(url("/alternative")).text == response_text

@@ -1,3 +1,4 @@
+from tests.conftest import api
 from api import API
 
 app = API()
@@ -44,3 +45,16 @@ class PizzaHandler:
 
     # def post(self, request, response):
     #     response.text = "Endpoint to queue a pizza"
+
+
+# django way of adding routes
+def handler(request, response):
+    response.text = "Django way of routes"
+
+
+def handler2(request, response):
+    response.text = "Django new support"
+
+
+app.add_route("/django", handler)
+app.add_route("/hidjango", handler2)
