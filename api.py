@@ -1,6 +1,8 @@
 import inspect
 from webob import Request, Response
 from parse import parse
+from requests import Session as RequestsSession
+from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 
 
 class API:
@@ -74,3 +76,14 @@ class API:
             self.default_response(response)
 
         return response
+
+    def test_session(self, base_url="http://testserver"):
+        """
+        Test client
+        To use the request WSGI Adapter , we need to mount the
+        it to a Session object.
+        https://docs.python-requests.org/en/master/user/advanced/
+        """
+        session = RequestsSession()
+        session.mount(prefix=base_url, adapter=RequestsWSGIAdapter(self))
+        return session

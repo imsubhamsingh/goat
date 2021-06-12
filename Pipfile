@@ -12,6 +12,7 @@ webob = "*"
 parse = "*"
 pytest = "*"
 requests = "*"
+requests-wsgi-adapter = "*"
 
 [requires]
 python_version = "3.7"
