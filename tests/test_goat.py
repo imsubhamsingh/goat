@@ -69,3 +69,16 @@ def test_alternate_route(api, client):
     api.add_route("/alternative", home)
 
     assert client.get(url("/alternative")).text == response_text
+
+
+def test_alternative_route_overlap_throws_exception(api):
+    def home(req, resp):
+        resp.text = "Welcome Django."
+
+    def home2(req, resp):
+        resp.text = "Welcome Goat"
+
+    api.add_route("/alternative", home)
+
+    with pytest.raises(AssertionError):
+        api.add_route("/alternative", home2)
