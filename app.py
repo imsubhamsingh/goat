@@ -56,5 +56,10 @@ def handler2(request, response):
     response.text = "Django new support"
 
 
+def json_handler(req, resp):
+    resp.json = {"Added by": "alternative method"}
+
+
 app.add_route("/django", handler)
 app.add_route("/hidjango", handler2)
+app.add_route("/alternative", json_handler)
