@@ -63,3 +63,10 @@ def json_handler(req, resp):
 app.add_route("/django", handler)
 app.add_route("/hidjango", handler2)
 app.add_route("/alternative", json_handler)
+
+# handler for template
+@app.route("/template")
+def template_handler(request, response):
+    response.body = app.template(
+        "index.html", context={"name": "Goat", "title": "A fast and simple framework"}
+    ).encode()
