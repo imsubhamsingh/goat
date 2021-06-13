@@ -4,6 +4,18 @@ from api import API
 app = API()
 
 
+def custom_exception_handler(request, response, exception_cls):
+    response.text = "Oops! Something went wrong. Please, report to Goat Support."
+
+
+app.add_exception_handler(custom_exception_handler)
+
+
+@app.route("/error")
+def exception_throwing_error(request, response):
+    raise AssertionError("This handler should not be used")
+
+
 """
 Creating functions here to test out request
 handlers from different routes  using flash way :)
