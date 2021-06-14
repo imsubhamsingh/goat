@@ -30,6 +30,13 @@ class API:
         Calling middleware in the entrypoint instead
         of own wsgi app.
         """
+        path_info = environ["PATH_INFO"]
+        # check for request path if it is static serve whitenoise
+        # else serve middleware
+        if path_info.startswith("/static"):
+            environ["PATH_INFO"] = path_info[len("/static") :]
+            return self.whitenoise(environ, start_response)
+
         return self.middleware(environ, start_response)
 
     def route(self, path):
