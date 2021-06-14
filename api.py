@@ -5,19 +5,23 @@ from parse import parse
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
-
+from whitenoise import WhiteNoise
 
 class API:
     """
     GOAT API
     """
 
-    def __init__(self, templates_dir="templates"):
+    def __init__(self, templates_dir="templates", static_dir="static"):
         self.routes = {}
         self.templates_env = Environment(
             loader=FileSystemLoader(os.path.abspath(templates_dir))
         )
         self.exception_handler = None
+        self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
+
+    def __call__(self, environ, start_response):
+        return self.whitenoise(environ, start_response)
 
     def route(self, path):
         """
@@ -39,10 +43,9 @@ class API:
 
         self.routes[path] = handler
 
-    def __call__(self, environ, start_response):
+    def wsgi_app(self, environ, start_response):
         """
-        Entrypoint callable receives three params
-        :self
+        Entrypoint callable receives two params
         :param environ
         :param start_response
         """
