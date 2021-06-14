@@ -6,6 +6,8 @@ from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 from jinja2 import Environment, FileSystemLoader
 from whitenoise import WhiteNoise
+from middleware import Middleware
+
 
 class API:
     """
@@ -20,8 +22,15 @@ class API:
         self.exception_handler = None
         self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
 
+        # wrapping the wsgi app(self)
+        self.middleware = Middleware(self)
+
     def __call__(self, environ, start_response):
-        return self.whitenoise(environ, start_response)
+        """
+        Calling middleware in the entrypoint instead
+        of own wsgi app.
+        """
+        return self.middleware(environ, start_response)
 
     def route(self, path):
         """
@@ -113,7 +122,7 @@ class API:
 
     def template(self, template_name, context=None):
         """
-        handles template's context values
+        Handles template's context values
         """
         if context is None:
             context = {}
@@ -121,3 +130,9 @@ class API:
 
     def add_exception_handler(self, exception_handler):
         self.exception_handler = exception_handler
+
+    def add_middleware(self, middleware_cls):
+        """
+        Method that's able to add middlewares.
+        """
+        self.middleware.add(middleware_cls)

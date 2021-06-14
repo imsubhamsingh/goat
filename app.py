@@ -1,5 +1,6 @@
 from tests.conftest import api
 from api import API
+from middleware import Middleware
 
 app = API()
 
@@ -59,7 +60,7 @@ class PizzaHandler:
     #     response.text = "Endpoint to queue a pizza"
 
 
-# django way of adding routes
+# django way of adding creating routes
 def handler(request, response):
     response.text = "Django way of routes"
 
@@ -72,6 +73,7 @@ def json_handler(req, resp):
     resp.json = {"Added by": "alternative method"}
 
 
+# plug all the url routes here
 app.add_route("/django", handler)
 app.add_route("/hidjango", handler2)
 app.add_route("/alternative", json_handler)
@@ -82,3 +84,16 @@ def template_handler(request, response):
     response.body = app.template(
         "index.html", context={"name": "Goat", "title": "A fast and simple framework"}
     ).encode()
+
+
+# A Simple middleware
+class SimpleCustomMiddleware(Middleware):
+    def process_request(self, request):
+        print(f"Processing request by {self} on {request.url}")
+
+    def process_response(self, request, response):
+        print(f"Processing response by {self} on {request.url}")
+
+
+# plug the middleware to the app
+app.add_middleware(SimpleCustomMiddleware)
