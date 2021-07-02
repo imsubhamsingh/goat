@@ -11,19 +11,19 @@ def url(s):
 def test_basic_route(api):
     @api.route("/home")
     def home(req, resp):
-        resp.text = "YOO"
+        resp.body = "YOO"
 
 
 def test_route_overlap_throws_exception(api):
     @api.route("/home")
     def home(req, resp):
-        resp.text = "YOO"
+        resp.body = "YOO"
 
     with pytest.raises(AssertionError):
 
         @api.route("/home")
         def home2(req, resp):
-            resp.text = "YOO"
+            resp.body = "YOO"
 
 
 def test_goat_test_client_can_send_request(api, client):
@@ -31,7 +31,7 @@ def test_goat_test_client_can_send_request(api, client):
 
     @api.route("/hey")
     def cool(req, resp):
-        resp.text = RESPONSE_TEXT
+        resp.body = RESPONSE_TEXT
 
     assert client.get("http://testserver/hey").text == RESPONSE_TEXT
 
@@ -39,7 +39,7 @@ def test_goat_test_client_can_send_request(api, client):
 def test_parameterized_route(api, client):
     @api.route("/{name}")
     def hello(req, resp, name):
-        resp.text = f"hey {name}!"
+        resp.body = f"hey {name}!"
 
     assert client.get("http://testserver/subham").text == "hey subham!"
     assert client.get("http://testserver/singh").text == "hey singh!"
@@ -55,7 +55,7 @@ def test_default_404_response(api, client):
 def test_status_code_returned(api, client):
     @api.route("/xxx")
     def xxx(req, resp):
-        resp.text = "not xxx things ;)"
+        resp.body = "not xxx things ;)"
         resp.status_code = 215
 
     assert client.get(url("/xxx")).status_code == 215
@@ -65,7 +65,7 @@ def test_alternate_route(api, client):
     response_text = "Alternate or django way to add a route."
 
     def home(req, resp):
-        resp.text = response_text
+        resp.body = response_text
 
     api.add_route("/alternative", home)
 
@@ -74,10 +74,10 @@ def test_alternate_route(api, client):
 
 def test_alternative_route_overlap_throws_exception(api):
     def home(req, resp):
-        resp.text = "Welcome Django."
+        resp.body = "Welcome Django."
 
     def home2(req, resp):
-        resp.text = "Welcome Goat"
+        resp.body = "Welcome Goat"
 
     api.add_route("/alternative", home)
 
