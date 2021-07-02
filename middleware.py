@@ -1,4 +1,4 @@
-from webob import Request
+from goat.requests import Request
 
 
 class Middleware:

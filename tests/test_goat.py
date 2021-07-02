@@ -1,6 +1,7 @@
 import pytest
-from api import API
-from webob import Request, Response
+from goat.api import API
+from goat.requests import Request
+from goat.responses import Response
 
 
 def url(s):

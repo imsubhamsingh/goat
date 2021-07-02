@@ -1,6 +1,7 @@
 import os
 import inspect
-from webob import Request, Response
+from .requests import Request
+from .responses import Response
 from parse import parse
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter

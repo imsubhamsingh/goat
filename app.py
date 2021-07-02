@@ -1,5 +1,5 @@
 from tests.conftest import api
-from api import API
+from goat.api import API
 from middleware import Middleware
 
 app = API()
