@@ -10,7 +10,7 @@ from whitenoise import WhiteNoise
 from middleware import Middleware
 
 
-class API:
+class Goat:
     """
     GOAT API
     """
@@ -32,6 +32,7 @@ class API:
         of own wsgi app.
         """
         path_info = environ["PATH_INFO"]
+
         # check for request path if it is static serve whitenoise
         # else serve middleware
         if path_info.startswith("/static"):

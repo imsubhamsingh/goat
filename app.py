@@ -1,8 +1,8 @@
-from tests.conftest import api
-from goat.api import API
+from tests.conftest import app
+from goat import Goat
 from middleware import Middleware
 
-app = API()
+app = Goat()
 
 
 def custom_exception_handler(request, response, exception_cls):

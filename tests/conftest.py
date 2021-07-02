@@ -1,10 +1,10 @@
 import pytest
-from goat.api import API
+import goat
 
 
 @pytest.fixture
-def api():
-    return API()
+def app():
+    return goat.Goat()
 
 
 def url(s):
@@ -12,5 +12,5 @@ def url(s):
 
 
 @pytest.fixture
-def client(api):
-    return api.test_session()
+def client(app):
+    return app.test_session()
