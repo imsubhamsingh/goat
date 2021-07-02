@@ -19,9 +19,9 @@ pip install goat
 ## Example
 
 ```python
-from api import API
+from goat import Goat
 
-app = API()
+app = Goat()
 
 @app.route("/")
 def index(req, res):
